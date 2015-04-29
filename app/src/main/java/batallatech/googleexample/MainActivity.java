@@ -3,6 +3,7 @@ package batallatech.googleexample;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.PlusShare;
 import com.google.android.gms.plus.model.people.Person;
 
 import org.w3c.dom.Text;
@@ -38,6 +40,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     Button signOutButton;
     TextView name;
     private boolean mSignInClicked;
+    Button shareBut;
 
 
 
@@ -177,6 +180,9 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         signOutButton.setOnClickListener(this);
         name = (TextView) findViewById(R.id.name);
         name.setVisibility(View.INVISIBLE);
+        shareBut = (Button) findViewById(R.id.share_button);
+
+        shareBut.setOnClickListener(this);
 
     }
 
@@ -188,6 +194,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 if (!mGoogleApiClient.isConnecting()) {
                     mSignInClicked = true;
                     mGoogleApiClient.connect();
+                    shareBut.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -199,8 +206,19 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                         signInButton.setVisibility(View.VISIBLE);
                         signOutButton.setVisibility(View.INVISIBLE);
                         name.setVisibility(View.INVISIBLE);
+                        shareBut.setVisibility(View.INVISIBLE);
                     }
 
+                break;
+
+            case R.id.share_button:
+                Intent shareIntent = new PlusShare.Builder(getApplicationContext())
+                        .setType("text/plain")
+                        .setText("Posting from an app!!")
+                        .setContentUrl(Uri.parse("https://developers.google.com/+/"))
+                        .getIntent();
+
+                startActivityForResult(shareIntent, 0);
                 break;
         }
     }
