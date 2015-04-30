@@ -105,6 +105,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
         signInButton.setVisibility(View.INVISIBLE);
         signOutButton.setVisibility(View.VISIBLE);
+        shareBut.setVisibility(View.INVISIBLE);
 
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
             Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
@@ -126,18 +127,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     @Override
     public void onConnectionFailed(ConnectionResult result) {
 
-//        if (!mIntentInProgress && result.hasResolution()) {
-//            try {
-//                mIntentInProgress = true;
-//                startIntentSenderForResult(result.getResolution().getIntentSender(),
-//                        RC_SIGN_IN, null, 0, 0, 0);
-//            } catch (IntentSender.SendIntentException e) {
-//                // The intent was canceled before it was sent.  Return to the default
-//                // state and attempt to connect to get an updated ConnectionResult.
-//                mIntentInProgress = false;
-//                mGoogleApiClient.connect();
-//            }
-//        }
         if (!mIntentInProgress) {
             if (mSignInClicked && result.hasResolution()) {
                 // The user has already clicked 'sign-in' so we attempt to resolve all
@@ -194,7 +183,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 if (!mGoogleApiClient.isConnecting()) {
                     mSignInClicked = true;
                     mGoogleApiClient.connect();
-                    shareBut.setVisibility(View.VISIBLE);
+
                 }
                 break;
 
